@@ -1,0 +1,9 @@
+---
+
+- name: Change apt source file content
+  blockinfile:
+    dest: /etc/apt/sources.list.d/gitlab_gitlab-ce.list
+    block: |
+      deb https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/debian "{{ ansible_distribution_release }}" main
+      deb-src https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/debian "{{ ansible_distribution_release }}"  main
+  when: gitlab_tuna_mirrors

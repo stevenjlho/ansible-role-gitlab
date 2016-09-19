@@ -1,0 +1,21 @@
+---
+
+# Check if use tuna mirrors
+gitlab_tuna_mirrors: false
+
+
+# Gitlab external url.
+gitlab_external_url: "http://gitlab.example.com"
+
+# GitLab Nginx
+gitlab_nginx_listen_port: "8080"
+
+
+# Gitlab config file. 
+gitlab_config_content: |
+  ## Url on which GitLab will be reachable.
+  ## For more details on configuring external_url see:
+  ## https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/configuration.md#configuring-the-external-url-for-gitlab
+  external_url "{{ gitlab_external_url }}" 
+
+  nginx['listen_port'] = "{{ gitlab_nginx_listen_port }}" # override only if you use a reverse proxy: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/nginx.md#setting-the-nginx-listen-port 
