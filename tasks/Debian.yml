@@ -6,7 +6,7 @@
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
-    - { regexp: '^deb\s.*', line: "deb https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/debian {{ ansible_distribution_release }} main" }
-    - { regexp: '^deb-src\s.*', line: "deb-src https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/debian {{ ansible_distribution_release }} main" }
+    - { regexp: '^deb\s.*', line: "deb https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/{{ ansible_distribution }} {{ ansible_distribution_release }} main" }
+    - { regexp: '^deb-src\s.*', line: "deb-src https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/{{ ansible_distribution }} {{ ansible_distribution_release }} main" }
       
       
