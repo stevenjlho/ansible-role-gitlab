@@ -1,12 +1,14 @@
 ---
 
 - name: Change apt source file content
-  lineinfile:
+  template:
+    src: debian_tuna_apt_source.j2
     dest: /etc/apt/sources.list.d/gitlab_gitlab-ce.list
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-  with_items:
-    - { regexp: '^deb\s.*', line: "deb https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/{{ ansible_distribution }} {{ ansible_distribution_release }} main" }
-    - { regexp: '^deb-src\s.*', line: "deb-src https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/{{ ansible_distribution }} {{ ansible_distribution_release }} main" }
+    owner: root
+    group: root
       
-      
+
+- name: Update repository
+  apt:
+    update_cache: yes
+  
