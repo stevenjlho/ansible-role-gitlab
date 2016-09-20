@@ -1,38 +1,66 @@
-Role Name
-=========
+[![Build Status][image-1]][1]
 
-A brief description of the role goes here.
+# Ansible Role: Gitlab
 
-Requirements
-------------
+A ansible role for Gitlab
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Requirements
 
-Role Variables
---------------
+GitLab requires Ruby (MRI) 2.3. Support for Ruby versions below 2.3 (2.1, 2.2) will stop with GitLab 8.13.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Role Variables
 
-Dependencies
-------------
+Available variables are listed below, along with default values (see defaults/main.yml):
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+	gitlab_tuna_mirrors: false
 
-Example Playbook
-----------------
+Use Chinese GitLab CE mirror hosted by TUNA instead of official mirror.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+	gitlab_external_url: "http://gitlab.example.com"
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Configure Gitlab [external url][2].
 
-License
--------
+	 gitlab_nginx_listen_port: "8080"
 
-BSD
+[Setting the NGINX listen port][3]
 
-Author Information
-------------------
+	gitlab_config_content: |
+	 ## Url on which GitLab will be reachable.
+	 ## For more details on configuring external_url see:
+	 ## https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/  configuration.md#configuring-the-external-url-for-gitlab
+	  external_url "{{ gitlab_external_url }}"
+	
+	  nginx['listen_port'] = "{{ gitlab_nginx_listen_port }}" # override only if you use a reverse proxy: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/ma    ster/doc/settings/nginx.md#setting-the-nginx-listen-port
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+The default configuring of `.gitlab.rb` file. Read the [Gitlab configuring][4] document to configure.
+
+## Dependencies
+
+None.
+
+## Example Playbook
+
+	- hosts: all
+	  vars_file:
+	    - vars/main.yml
+	  roles:
+	     - stevenjlho.gitlab
+
+Inside `vars/main.yml`:
+	gitlab_nginx_listen_port: "8082"
+
+## License
+
+MIT
+
+## Author Information
+
+This role was created in 2016 by [Steven Ho][5]
+
+[1]:	https://travis-ci.org/stevenjlho/ansible-role-gitlab
+[2]:	https://docs.gitlab.com/omnibus/settings/configuration.html#configuring-the-external-url-for-gitlab
+[3]:	https://docs.gitlab.com/omnibus/settings/nginx.html#setting-the-nginx-listen-port
+[4]:	https://docs.gitlab.com/omnibus/#configuring
+[5]:	http://stevenjlho.github.io/
+
+[image-1]:	https://travis-ci.org/stevenjlho/ansible-role-gitlab.svg?branch=master
