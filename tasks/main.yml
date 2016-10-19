@@ -2,10 +2,6 @@
 - name: Include OS-specific variables.
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Check if GitLab configuration file already exists.
-  stat: path=/etc/gitlab/gitlab.rb
-  register: gitlab_config_file
-
 - name: Check if GitLab is already installed.
   stat: path=/usr/bin/gitlab-ctl
   register: gitlab_ctl
@@ -22,19 +18,19 @@
   get_url:
     url: "{{ gitlab_repository_installation_script_url }}"
     dest: /tmp/gitlab_install_repository.sh
-  when: gitlab_ctl.stat.exists == false
+  when: not gitlab_ctl.stat.exists and not gitlab_tuna_mirrors
 
 - name: Install GitLab repository
   command: bash /tmp/gitlab_install_repository.sh
-  when: gitlab_ctl.stat.exists == false
+  when: not gitlab_ctl.stat.exists and not gitlab_tuna_mirrors
 
 - name: Include distribution task.
   include: "{{ ansible_os_family }}.yml"
-  when: gitlab_tuna_mirrors
+  when: not gitlab_ctl.stat.exists and gitlab_tuna_mirrors
 
 - name: Install GitLab
   package: name=gitlab-ce state=installed
-  when: gitlab_ctl.stat.exists == false
+  when: not gitlab_ctl.stat.exists
 
 - name: Copy GitLab configuration file.
   template:
