@@ -47,7 +47,8 @@ None.
 	     - stevenjlho.gitlab
 
 Inside `vars/main.yml`:
-	gitlab_nginx_listen_port: "8082"
+
+	 gitlab_nginx_listen_port: "8081"
 
 ## License
 
