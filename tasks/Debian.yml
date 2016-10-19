@@ -1,12 +1,13 @@
 ---
+- name: Add Gitlab gpg key
+  apt_key:
+    url: "https://packages.gitlab.com/gpg.key"
 
 - name: Change apt source file content
-  template:
-    src: debian_tuna_apt_source.j2
-    dest: /etc/apt/sources.list.d/gitlab_gitlab-ce.list
-    owner: root
-    group: root
-      
+  apt_repository:
+     repo: "deb https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/{{ ansible_distribution.lower() }}  {{ ansible_distribution_release }} main"
+     state: present
+     filename: "gitlab-ce"
 
 - name: Update repository
   apt:
